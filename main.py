@@ -15,25 +15,30 @@ the spreadsheets by their service, locality type, and year and merge the data fr
 
 # Setting the path to the directory containing the spreadsheets and the directory for the results.
 try:
-    pwd = data_file = os.path.join(sys._MEIPASS, 'input')
+    PWD = data_file = os.path.join(sys._MEIPASS, 'input')
+    if not os.path.exists(PWD):
+        raise FileNotFoundError(f"Input directory '{PWD}' not found.")
 except Exception as e:
-    pwd = os.path.join(os.path.dirname(os.path.abspath(__file__)),'input')
+    PWD = os.path.join(os.path.dirname(os.path.abspath(__file__)),'input')
+    if not os.path.exists(PWD):
+        raise FileNotFoundError(f"Input directory '{PWD}' not found.")
 
-results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'results')
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'results')
 
 
 def main():
     print("Did you make sure that:\n1.The files' format is:\tservice_localiteType_year.xls/xlsx\n2.This script is located next to the 'input' directory containing the excel files.")
     if (input("confirm [Y] Yes  [N] No ?  ")[0].lower()=='y'):
         print("Launching ...")
-        serviceDirs.serviceDirs(pwd,results_dir)
+        serviceDirs.serviceDirs(PWD,RESULTS_DIR)
         print("=======\tCreated service dirs")
-        serviceFiles.serviceFiles(results_dir)
+        serviceFiles.serviceFiles(RESULTS_DIR)
         print("=======\t file_per_service generated")
-        consolidate.consolidate(results_dir)
+        consolidate.consolidate(RESULTS_DIR)
         print("=======\tSuccessful")
         print("============\tThank you for using this script, hope it helped\t=================")
-
+    else: 
+        print("\nRun the script after you set up your directories :D")
 
 if __name__ == '__main__':
     main()
